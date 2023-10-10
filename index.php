@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="./css/index.css" />
+  <link rel="stylesheet" href="./css/index.css"/>
   <?php require "./includes/links.php" ?>
   <title>CMS Project</title>
 </head>
@@ -20,18 +20,8 @@
     <div id="container">
       <?php
       $rem = "<script>document.write(window.localStorage.getItem('cms_username'))</script>";
-      setcookie("cms_email", "admin@gmail.com", time() + 86400, "/");
-
-      if (isset($_GET['category'])) {
-        $cat_id = $_GET['category'];
-      }
-
-      $query = "select category from posts where PID='$cat_id';";
-      $data = mysqli_query($con, $query);
-      $row = mysqli_fetch_assoc($data);
-      $cat = $row['category'];
-
-      $query = "select * from posts where category='$cat';";
+      // setcookie("cms_email", "admin@gmail.com", time() + 86400 * 365, "/");
+      $query = "select * from posts order by PID desc;";
       $data = mysqli_query($con, $query);
       while ($row = mysqli_fetch_assoc($data)) {
         $PID = $row["PID"];
@@ -42,6 +32,9 @@
         $thumbnail = $row["thumbnail"];
         $content = $row["content"];
 
+        echo "<script>
+              document.cookie = 'cms_username='+ localStorage.getItem('cms_username');
+            </script>";
         ?>
         <ul class="postID" id=<?php echo $PID ?>>
           <li>
@@ -61,7 +54,6 @@
       <?php } ?>
     </div>
 
-
     <!-- side bar -->
     <div id="sidebar">
       <?php require_once "./includes/searchBar.php" ?>
@@ -78,7 +70,5 @@
   </div>
 </body>
 <script src="./js/navBtn.js"></script>
-<!-- <script src="./js/working.js"></script> -->
 <script src="./js/index.js"></script>
-
 </html>
